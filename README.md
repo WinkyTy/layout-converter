@@ -1,5 +1,13 @@
 # Layout Converter - Key ID System
 
+> **⚠️ WORK IN PROGRESS** ⚠️
+> 
+> This app is not ready for production use yet. The core Key ID System algorithm is implemented and working, but the full application is still under development.
+> 
+> **Current Status:** Core algorithm demo available, CLI and full app coming soon.
+
+---
+
 A high-performance C++ library for converting text between different keyboard layouts using an innovative **Key ID System**.
 
 ## 🎯 Key Features
