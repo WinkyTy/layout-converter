@@ -1,20 +1,37 @@
 {
   "id": "workman",
   "name": "Workman",
-  "language": "en",
-  "script": "latin",
+  "family_id": 1,
+  "layout_id": 2,
   "frequency_score": 0.05,
-  "description": "Workman layout optimized for English",
+  "description": "Workman layout optimized for English using key IDs",
   "common_words": ["the", "and", "for", "are", "but", "not", "you", "all", "can", "had", "her", "was", "one", "our", "out", "day", "get", "has", "him", "his", "how", "man", "new", "now", "old", "see", "two", "way", "who", "boy", "did", "its", "let", "put", "say", "she", "too", "use"],
-  "mapping": {
-    "q": "d", "w": "r", "e": "w", "r": "b", "t": "j", "y": "f", "u": "u", "i": "p", "o": ";", "p": "l",
-    "a": "a", "s": "s", "d": "h", "f": "t", "g": "g", "h": "y", "j": "n", "k": "e", "l": "o",
-    "z": "z", "x": "x", "c": "m", "v": "c", "b": "v", "n": "k", "m": "l"
-  },
-  "character_frequency": {
-    "e": 0.127, "t": 0.091, "a": 0.082, "o": 0.075, "i": 0.070, "n": 0.067, "s": 0.063, "h": 0.061,
-    "r": 0.060, "d": 0.043, "l": 0.040, "c": 0.028, "u": 0.028, "m": 0.024, "w": 0.024, "f": 0.022,
-    "g": 0.020, "y": 0.020, "p": 0.019, "b": 0.015, "v": 0.010, "k": 0.008, "j": 0.002, "x": 0.002,
-    "q": 0.001, "z": 0.001
+  "key_mappings": {
+    "1201": "d",
+    "1202": "r", 
+    "1203": "w",
+    "1204": "b",
+    "1205": "j",
+    "1206": "f",
+    "1207": "u",
+    "1208": "p",
+    "1209": ";",
+    "1210": "l",
+    "1211": "a",
+    "1212": "s",
+    "1213": "h",
+    "1214": "t",
+    "1215": "g",
+    "1216": "y",
+    "1217": "n",
+    "1218": "e",
+    "1219": "o",
+    "1220": "z",
+    "1221": "x",
+    "1222": "m",
+    "1223": "c",
+    "1224": "v",
+    "1225": "k",
+    "1226": "l"
   }
 } 

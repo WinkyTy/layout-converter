@@ -2,7 +2,6 @@
 
 # Create the core library
 add_library(layout_converter_core SHARED
-    src/layout_engine.cpp
     src/key_system.cpp
 )
 
