@@ -69,7 +69,8 @@ class LayoutConverterWrapper:
     def convert(self, text: str, from_layout: str, to_layout: str) -> Dict[str, Any]:
         """Convert text between layouts"""
         if not self.lib:
-            return {"error": "Library not loaded"}
+            # Fallback mode: simple character mapping
+            return self._fallback_convert(text, from_layout, to_layout)
         
         # Convert layout strings to enum values
         from_enum = self._string_to_layout_enum(from_layout)
@@ -118,6 +119,36 @@ class LayoutConverterWrapper:
             "russian_typewriter": self.LAYOUT_RUSSIAN_TYPEWRITER
         }
         return layout_map.get(layout_str.lower(), self.LAYOUT_UNKNOWN)
+    
+    def _fallback_convert(self, text: str, from_layout: str, to_layout: str) -> Dict[str, Any]:
+        """Fallback conversion when C++ library is not available"""
+        # Simple QWERTY to Workman mapping for fallback
+        qwerty_to_workman = {
+            'q': 'd', 'w': 'r', 'e': 'w', 'r': 'b', 't': 'j', 'y': 'f', 'u': 'u', 'i': 'p', 'o': ';', 'p': 'l',
+            'a': 'a', 's': 's', 'd': 'h', 'f': 't', 'g': 'g', 'h': 'y', 'j': 'n', 'k': 'e', 'l': 'o',
+            'z': 'z', 'x': 'x', 'c': 'm', 'v': 'c', 'b': 'v', 'n': 'k', 'm': 'l'
+        }
+        
+        if from_layout.lower() == "qwerty" and to_layout.lower() == "workman":
+            converted = ""
+            for char in text:
+                converted += qwerty_to_workman.get(char.lower(), char)
+            return {
+                "original_text": text,
+                "converted_text": converted,
+                "from_layout": from_layout,
+                "to_layout": to_layout,
+                "confidence": 0.8  # Lower confidence for fallback
+            }
+        else:
+            return {
+                "original_text": text,
+                "converted_text": text,  # No conversion in fallback
+                "from_layout": from_layout,
+                "to_layout": to_layout,
+                "confidence": 0.5,
+                "note": "Fallback mode - limited conversion available"
+            }
 
 class LayoutConverterBot:
     """Telegram bot for layout conversion"""
@@ -129,13 +160,23 @@ class LayoutConverterBot:
             raise ValueError("TELEGRAM_BOT_TOKEN not set in environment")
         
         # Initialize the C++ wrapper
-        library_path = os.path.join(
-            os.path.dirname(__file__), 
-            '..', 
-            'build', 
-            'lib', 
-            'liblayout_converter_core.so'
-        )
+        # Try multiple possible library paths
+        possible_paths = [
+            os.path.join(os.path.dirname(__file__), '..', 'build', 'lib', 'liblayout_converter_core.so'),
+            os.path.join(os.path.dirname(__file__), '..', 'build', 'lib', 'liblayout_converter_core.dylib'),
+            '/app/build/lib/liblayout_converter_core.so',
+            '/app/build/lib/liblayout_converter_core.dylib'
+        ]
+        
+        library_path = None
+        for path in possible_paths:
+            if os.path.exists(path):
+                library_path = path
+                break
+        
+        if not library_path:
+            print("Warning: C++ library not found. Bot will run in fallback mode.")
+            library_path = "/dev/null"  # Dummy path for fallback mode
         self.converter = LayoutConverterWrapper(library_path)
         
         # Available layouts
